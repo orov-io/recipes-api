@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -98,6 +99,20 @@ func DeleteRecipe(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Recipe has been deleted",
 	})
+}
+
+func SearchRecipes(c *gin.Context) {
+	tag := c.Query("tag")
+	matchedRecipes := make([]Recipe, 0)
+	for i := 0; i < len(recipes); i++ {
+		for _, t := range recipes[i].Tags {
+			if strings.EqualFold(t, tag) {
+				matchedRecipes = append(matchedRecipes, recipes[i])
+				break
+			}
+		}
+	}
+	c.JSON(http.StatusOK, matchedRecipes)
 }
 
 func main() {
