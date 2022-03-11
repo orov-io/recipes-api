@@ -121,6 +121,5 @@ func main() {
 	router.GET("/recipes", ListRecipes)
 	router.PUT("/recipes/:id", UpdateRecipe)
 	router.DELETE("/recipes/:id", DeleteRecipe)
-	router.GET("/recipes/search", SearchRecipes)
 	router.Run()
 }
