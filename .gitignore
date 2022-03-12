@@ -15,3 +15,5 @@
 # vendor/
 
 graph.png
+
+.override.env

@@ -1,2 +1,6 @@
 version: '3.7'
 
+services:
+  mongo:
+    logging:
+      driver: json-file
