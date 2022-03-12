@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  mongo:
+    image: mongo
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - 27017:27017
+    restart: ${RESTART_POLICY}
+    volumes:
+      - mongodb-data:/data/db
+    logging:
+      driver: none
+
+volumes:
+  mongodb-data:
+    driver: local
