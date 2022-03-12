@@ -16,14 +16,18 @@
 package main
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"context"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/xid"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type Recipe struct {
@@ -38,9 +42,17 @@ type Recipe struct {
 var recipes []Recipe
 
 func init() {
-	recipes = make([]Recipe, 0)
-	file, _ := ioutil.ReadFile("recipes.json")
-	_ = json.Unmarshal([]byte(file), &recipes)
+	ctx := context.Background()
+	mongoURI := os.Getenv("MONGO_URI")
+	log.Println("Mongo will try to connect with " + mongoURI)
+	mongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
+	if err != nil {
+		log.Fatal("Unable to connect to mongo DB due to " + err.Error())
+	}
+	if err = mongoClient.Ping(context.TODO(), readpref.Primary()); err != nil {
+		log.Fatal("Unable to ping to mongo DB due to " + err.Error())
+	}
+	log.Println("Connected to MongoDB")
 }
 
 // swagger:operation POST /recipes recipes newRecipe

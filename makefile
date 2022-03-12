@@ -1,3 +1,9 @@
+include .env
+export $(shell sed 's/=.*//' .env)
+
+include .override.env
+export $(shell sed 's/=.*//' .override.env)
+
 graph:
 	go mod graph | modgv | sfdp -Tpng -o graph.png
 
@@ -24,3 +30,6 @@ destroy:
 	docker-compose rm -f -v -s
 build:
 	docker-compose build
+
+run:
+	go run main.go
