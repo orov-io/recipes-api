@@ -33,3 +33,9 @@ build:
 
 run:
 	go run main.go
+
+seed:
+	docker exec r-api-mongo rm -rf ./seeds
+	docker cp ./seeds r-api-mongo:./seeds
+	docker exec r-api-mongo mongoimport --username ${MONGO_USERNAME} --password ${MONGO_PASSWORD} --authenticationDatabase admin --db ${MONGO_DATABASE} --collection recipes --file ./seeds/recipes.json --jsonArray
+	docker exec r-api-mongo rm -rf ./seeds

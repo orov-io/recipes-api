@@ -17,3 +17,4 @@
 graph.png
 
 .override.env
+docker-compose.override.yml
